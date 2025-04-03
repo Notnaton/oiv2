@@ -1,8 +1,5 @@
 import os
-import subprocess
-import platform
 from typing import Optional
-from pydantic import BaseModel
 from cli_utils import Text
 from tools.tools import function_tool
 from conversation import Message
@@ -18,10 +15,3 @@ def shell(command: str) -> Message:
         message=f"{os.getcwd()}: {command}\n{output}",
         summary=f'Assistant executed the shell function with the command `{command}`'
     )
-
-@function_tool
-def user_input(prompt: Optional[str]) -> Message:
-    if prompt:
-        print(prompt)
-    text = input(Text(text="You: ", color="blue"))
-    return Message(role="user", message=text, summary="") 

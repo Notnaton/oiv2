@@ -8,15 +8,29 @@ from litellm import acompletion
 from cli_utils import Text
 from tools.tools import function_tool, ToolRegistry
 from conversation import Message, Conversation
-from tools.terminal import user_input
+import tools
+from tools.user_input import user_input
+import locale
 
 class Interpreter:
     def __init__(self, model: str = "openai/local"):
         self.model = model
-        self.conversation = Conversation(messages=[Message(role="system",message=(
-            f"""You are a helpful tool calling assistant. Use tools to help the user. 
-            Users Operating System is: {platform.platform(terse=True)}"""
-            ),summary="",)], max_recent=10)
+        self.conversation = Conversation(
+            messages=[
+                Message(
+                    role="system",
+                    message=(
+                        "You are a helpful, friendly, tool calling assistant. Use tools to help the user."
+                        "\nWhen confronted with the result of a tool call, please provide a summary of the tool call result that relates to the user's request."
+                        "\nDo not execute another tool call __unless__ the output was *wrong*, *incomplete*, or you need to **change** the tool command."
+                        f"\nUser's Operating System is: {platform.platform(terse=True)}"
+                        f"\nThe native locale is: {locale.getlocale()[0]}"
+                    ),
+                    summary=""
+                )
+            ],
+            max_recent=10
+        )
 
     async def respond(self):
         response = await acompletion(
@@ -24,7 +38,7 @@ class Interpreter:
             base_url="http://localhost:1234/v1",
             api_key="dummy",
             messages=self.conversation.get_messages(),
-            max_tokens=1000,
+            max_tokens=3000,
             tools=ToolRegistry.get_all_tools(),
         )
         msg_resp = response.choices[0].message
