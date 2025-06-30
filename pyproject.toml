@@ -10,6 +10,8 @@ dependencies = [
     "pydantic>=2.11.1",
     "pillow>=10.0.0",
     "pyautogui>=0.9.54",
+    "dspy>=2.6.27",
+    "mem0ai>=0.1.113",
 ]
 
 [project.scripts]
