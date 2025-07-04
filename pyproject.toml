@@ -5,20 +5,12 @@ description = "Compact AI assistant with computer automation - grid-based screen
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "colorama>=0.4.6",
-    "litellm>=1.65.0",
+    "dspy-ai>=2.6.27",
     "pydantic>=2.11.1",
-    "pillow>=10.0.0",
-    "pyautogui>=0.9.54",
-    "dspy>=2.6.27",
-    "mem0ai>=0.1.113",
 ]
 
 [project.scripts]
-interpreter = "cli:main"
 oiv2 = "oiv2.cli:main"
-oiv2-setup = "setup:check"
-oiv2-test = "test:test"
 
 [build-system]
 requires = ["hatchling"]
